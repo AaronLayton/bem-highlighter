@@ -15,4 +15,4 @@ BEM.highlightBEMElements()
 
 The above will then add `box-shadows` to each matched element
 
-![alt tag](https://github.com/AaronLayton/bem-highlighter/output.png)
+![alt tag](https://github.com/AaronLayton/bem-highlighter/blob/master/output.png)
