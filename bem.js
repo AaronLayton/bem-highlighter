@@ -1,6 +1,8 @@
-var BEM = (function(){
+/* jshint devel:true */ 
+/* exported BEM */
+'use strict';
 
-	var privateVar = "Aaron test";
+var BEM = (function(){
 
 	function get_random_color() {
 		var letters = '0123456789ABCDEF'.split('');
@@ -14,10 +16,8 @@ var BEM = (function(){
 	}
 
 	var BEM = {
-
 		getAllClassNames: function(){
-
-			var allTags = document.body.getElementsByTagName("*");
+			var allTags = document.body.getElementsByTagName('*');
 
 			// Fastest http://jsperf.com/fastest-array-loops-in-javascript/133
 			var len = allTags.length,
@@ -31,7 +31,6 @@ var BEM = (function(){
 				tag = allTags[i];
 
 				if (tag.className) {
-
 					var classes = tag.classList,//tag.className.split(" "),
 						classLen = classes.length,
 						j = 0;
@@ -47,7 +46,6 @@ var BEM = (function(){
 
 						j++;
 					}
-
 				}
 
 				i++;
@@ -68,18 +66,17 @@ var BEM = (function(){
 
 			// Loop through all tags
 			while (i < len) {
-				className = uniqueClassNames[i];
+				var className = uniqueClassNames[i],
+					BEMName;
 
-				if (className.indexOf("__") != -1) {
-
-					var BEMName = className.split("__")[0];
+				if (className.indexOf('__') != -1) {
+					BEMName = className.split('__')[0];
 
 					if (! BEMNames[BEMName]) {
 						BEMNames[BEMName] = true;
 					}
-				} else if (className.indexOf("--") != -1) {
-
-					var BEMName = className.split("--")[0];
+				} else if (className.indexOf('--') != -1) {
+					BEMName = className.split('--')[0];
 
 					if (! BEMNames[BEMName]) {
 						BEMNames[BEMName] = true;
@@ -93,38 +90,31 @@ var BEM = (function(){
 			for (var name in BEMNames) BEMList.push(name);
 
 			return BEMList;
-
 		},
 
 
 		highlightBEMElements: function(){
-			
 			var BEMClasses = BEM.getBEMClassNames(),
 				len = BEMClasses.length,
 				i = 0;
 
 			while (i < len) {
-				
 				var elements = document.getElementsByClassName( BEMClasses[i] ),
 					len2 = elements.length,
 					BEMColor = get_random_color(),
 					j = 0;
 
 				while (j < len2) {
-
 					console.log(elements[j]);
-
-					//elements[j].style.border = "4px solid " + BEMColor;
-					elements[j].style.boxShadow = "0 0 0 4px " + BEMColor;
+					elements[j].style.boxShadow = '0 0 0 4px ' + BEMColor;
 
 					j++;
 				}
 				
 				i++;
 			}
-
 		}
-	}
+	};
 
 	return BEM;
 })();
