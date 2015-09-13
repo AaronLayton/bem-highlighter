@@ -1,0 +1,33 @@
+{
+  "name": "bem-highlighter",
+  "title": "BEM Highlight",
+  "version": "1.0.0",
+  "description": "A simple library to help visualise all BEM elements on a page. Supports suit, inuit & yandex.",
+  "scripts": {
+    "test": "./node_modules/.bin/grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AaronLayton/bem-highlighter.git"
+  },
+  "keywords": [
+    "bem",
+    "suit",
+    "inuit",
+    "yandex",
+    "highlight"
+  ],
+  "author": [
+    "Aaron Layton"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AaronLayton/bem-highlighter/issues"
+  },
+  "homepage": "https://github.com/AaronLayton/bem-highlighter#readme",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jslint": "^0.2.2",
+    "gulp-load-plugins": "^1.0.0-rc.1"
+  }
+}

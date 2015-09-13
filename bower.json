@@ -1,0 +1,25 @@
+{
+  "name": "bem-highlighter",
+  "version": "1.0.0",
+  "homepage": "https://github.com/AaronLayton/bem-highlighter",
+  "authors": [
+    "Aaron Layton <aaron.r.layton@gmail.com>"
+  ],
+  "description": "A simple library to help visualise all BEM elements on a page. Supports suit, inuit & yandex.",
+  "main": "bem.js",
+  "keywords": [
+    "bem",
+    "suit",
+    "inuit",
+    "yandex",
+    "highlight"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
