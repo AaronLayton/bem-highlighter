@@ -1,11 +1,54 @@
 /* jshint devel:true */
 /* exported BEM */
+
+// ============================================================
+// https://github.com/philipwalton/html-inspector/blob/master/src/rules/convention/bem-conventions.js
+
+// suit: http://suitcss.github.io/
+// -------------------------------------
+// BlockName
+// BlockName--modifierName
+// BlockName-elementName
+// BlockName-elementName--modifierName
+//
+// inuit: http://inuitcss.com/
+// ---------------------------
+// block-name
+// block-name--modifier-name
+// block-name__element-name
+// block-name__element-name--modifier-name
+//
+// yandex: http://bem.info/
+// ------------------------
+// block-name
+// block-name__elemement-name
+// block-name_modifier_name
+// block-name__element-name_modifier_name
+//
+// ============================================================
+
 var BEM = (function() {
   'use strict';
 
+  var methodologies = {
+	  "suit": {
+	    modifier: /^([A-Z][a-zA-Z]*(?:\-[a-zA-Z]+)?)\-\-[a-zA-Z]+$/,
+	    element: /^([A-Z][a-zA-Z]*)\-[a-zA-Z]+$/
+	  },
+	  "inuit": {
+	    modifier: /^((?:[a-z]+\-)*[a-z]+(?:__(?:[a-z]+\-)*[a-z]+)?)\-\-(?:[a-z]+\-)*[a-z]+$/,
+	    element: /^((?:[a-z]+\-)*[a-z]+)__(?:[a-z]+\-)*[a-z]+$/
+	  },
+	  "yandex": {
+	    modifier: /^((?:[a-z]+\-)*[a-z]+(?:__(?:[a-z]+\-)*[a-z]+)?)_(?:[a-z]+_)*[a-z]+$/,
+	    element: /^((?:[a-z]+\-)*[a-z]+)__(?:[a-z]+\-)*[a-z]+$/
+	  }
+	};
+
+
   function get_random_color() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
+    var letters = '0123456789ABCDEF'.split(''),
+    	color = '#';
 
     for (var i = 0; i < 6; i++) {
       color += letters[Math.round(Math.random() * 15)];
@@ -15,6 +58,48 @@ var BEM = (function() {
   }
 
   var BEM = {
+  	matchAllMethodologies: function(){
+      var result = [];
+
+      for (var method in methodologies) { 
+        result = BEM.matchAllType(method, result);
+      }
+      
+      return result;
+  	},
+    matchAllType: function(methedology, startingArray){
+      var allClasses = BEM.getAllClassNames(),
+          BEMList = startingArray || [];
+
+      for (var i = 0, len = allClasses.length; i < len; i++) {
+        var result = BEM.getBlockName(allClasses[i], methedology);
+
+        if (result !== false && BEMList.indexOf(result) === -1) {
+          BEMList.push(result);
+        }
+      }
+
+      return BEMList
+    },
+
+  	getBlockName: function(elementOrModifier, methodology) {
+	    var block
+	      , methodology = methodologies[methodology]
+	    if (methodology.modifier.test(elementOrModifier))
+	      return block = RegExp.$1
+	    if (methodology.element.test(elementOrModifier))
+	      return block = RegExp.$1
+	    return block || false
+	  },
+
+  	isElement: function(cls, methodology) {
+	    return methodologies[methodology].element.test(cls)
+	  },
+
+  	isModifier: function(cls, methodology) {
+	    return methodologies[methodology].modifier.test(cls)
+	  },
+
     getAllClassNames: function() {
       var allTags = document.body.getElementsByTagName('*');
 
@@ -55,63 +140,29 @@ var BEM = (function() {
 
       return classList;
     },
+    highlightClass: function( className ) {
+      var randColor = get_random_color();
 
-    getBEMClassNames: function() {
-      var uniqueClassNames = BEM.getAllClassNames(),
-        len = uniqueClassNames.length,
-        BEMNames = {},
-        BEMList = [],
-        i = 0;
+      var matched = document.getElementsByClassName(className);
 
-      // Loop through all tags
-      while (i < len) {
-        var className = uniqueClassNames[i],
-          BEMName;
-
-        if (className.indexOf('__') != -1) {
-          BEMName = className.split('__')[0];
-
-          if (!BEMNames[BEMName]) {
-            BEMNames[BEMName] = true;
-          }
-        } else if (className.indexOf('--') != -1) {
-          BEMName = className.split('--')[0];
-
-          if (!BEMNames[BEMName]) {
-            BEMNames[BEMName] = true;
-          }
-        }
-
+      var i = 0;
+      while (i < matched.length) {
+        matched[i].style.boxShadow = '0 0 0 4px ' + randColor;
         i++;
       }
 
-      // Now that we have an object of unique names we an turn to an array
-      for (var name in BEMNames) BEMList.push(name);
-
-      return BEMList;
+    },
+    highlightMatched: function( classesArray ){
+      var i = 0;
+      while (i < classesArray.length) {
+        BEM.highlightClass( classesArray[i] );
+        i++;
+      }
     },
 
-
     highlightBEMElements: function() {
-      var BEMClasses = BEM.getBEMClassNames(),
-        len = BEMClasses.length,
-        i = 0;
-
-      while (i < len) {
-        var elements = document.getElementsByClassName(BEMClasses[i]),
-          len2 = elements.length,
-          BEMColor = get_random_color(),
-          j = 0;
-
-        while (j < len2) {
-          console.log(elements[j]);
-          elements[j].style.boxShadow = '0 0 0 4px ' + BEMColor;
-
-          j++;
-        }
-
-        i++;
-      }
+      var results = BEM.matchAllMethodologies();
+      BEM.highlightMatched(results);
     }
   };
 
