@@ -2,8 +2,7 @@
 /* exported BEM */
 
 // ============================================================
-// https://github.com/philipwalton/html-inspector/blob/master/src/rules/convention/bem-conventions.js
-
+//
 // suit: http://suitcss.github.io/
 // -------------------------------------
 // BlockName
@@ -67,6 +66,7 @@ var BEM = (function() {
       
       return result;
   	},
+
     matchAllType: function(methedology, startingArray){
       var allClasses = BEM.getAllClassNames(),
           BEMList = startingArray || [];
@@ -85,10 +85,12 @@ var BEM = (function() {
   	getBlockName: function(elementOrModifier, methodology) {
 	    var block
 	      , methodology = methodologies[methodology]
+
 	    if (methodology.modifier.test(elementOrModifier))
 	      return block = RegExp.$1
 	    if (methodology.element.test(elementOrModifier))
 	      return block = RegExp.$1
+
 	    return block || false
 	  },
 
